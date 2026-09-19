@@ -1,0 +1,75 @@
+# JOB-20260917-MM-001 — regime logger config (all thresholds DRAFT)
+# Research only — no live trading, no exchange API keys.
+
+job_id: JOB-20260917-MM-001
+research_only: true
+
+venue:
+  default: BN_AGG
+  proxy: true  # DRAFT — BN labels are research proxy until Bitunix book agrees (C4)
+
+session:
+  anchor: UTC_DAY  # locked per architecture v0.1
+
+splits:
+  develop_frac: 0.6   # DRAFT
+  validate_frac: 0.2  # DRAFT
+  holdout_frac: 0.2   # DRAFT
+
+thresholds:
+  balance:
+    range_epsilon_bps: 10       # DRAFT — inner buffer from session extremes
+    range_epsilon_frac: 0.05    # DRAFT — fraction of session range width
+    range_min_bps: 15           # DRAFT — C1 hard gate R_min before BREAK_CANDIDATE
+
+  break:
+    t0_seconds: 10              # DRAFT — sticky time outside boundary
+    epsilon_range_bps: 15       # DRAFT — beyond session range edge
+    epsilon_vwap_bps: 12        # DRAFT — beyond VWAP band edge
+
+  confirm:
+    t_hold_seconds: 45            # DRAFT — hold beyond broken level
+    t_hold_single_leg_seconds: 75 # DRAFT — C2 stricter hold when which=range|vwap only
+    n_prints_min: 5               # DRAFT — optional print count gate
+    v_break_btc: 0.5              # DRAFT — optional signed volume gate
+    require_reload: true          # DRAFT — reload/aggression alignment required
+    require_cvd_align: true       # DRAFT — CVD alignment required when column present
+    confirm_timeout_seconds: 120  # DRAFT — max CONFIRM_WINDOW duration
+
+  sig_pull:
+    depth_drop_pct: 0.30          # DRAFT — near-touch depth drop fraction
+    window_seconds: 5             # DRAFT
+    print_vol_min_btc: 0.1        # DRAFT — prints below this => pull candidate
+
+  quote_walk:
+    mid_move_bps_min: 3           # DRAFT — mid move without prints triggers VETO
+
+  vwap:
+    band_mode: bps                # DRAFT — "bps" or "sigma" (sigma needs rolling std column)
+    band_bps: 50                  # DRAFT
+    band_k_sigma: 2.0             # DRAFT
+
+judgment_battery:
+  enabled: true
+  client: stub  # DRAFT — swap for future TypeSafe client; no live Jev / no AgenKit
+  thresholds:
+    confidence_base: 0.75                    # DRAFT
+    confidence_short_circuit: 0.35             # DRAFT — when hard gates short-circuit
+    toxic_flow_event_window_boost: 0.25        # DRAFT
+    toxic_flow_sig_pull_boost: 0.20          # DRAFT
+    toxic_flow_quote_walk_boost: 0.30          # DRAFT
+    liquidity_stressed_depth_drop_min: 0.25    # DRAFT
+    liquidity_stressed_sig_pull_boost: 0.35  # DRAFT
+    quote_walk_veto_risk_mid_move_bps: 3.0   # DRAFT
+    quote_environment_base: 70.0             # DRAFT
+    quote_environment_toxic_penalty: 40.0    # DRAFT
+    quote_environment_liquidity_penalty: 30.0  # DRAFT
+    regime_break_min_print_volume: 0.01      # DRAFT
+    toxic_flow_high_threshold: 0.65            # DRAFT
+    liquidity_stressed_high_threshold: 0.55  # DRAFT
+    quote_walk_veto_risk_high_threshold: 0.50  # DRAFT
+
+output:
+  transition_log: regime_transitions.csv
+  summary_json: regime_summary_develop.json
+  battery_log: judgment_battery.csv

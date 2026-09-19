@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 
 from regime_logger.config import config_schema_description, load_config
+from regime_logger.judgment.market_state import market_state_schema
 from regime_logger.runner import run_paper_harness
 
 
@@ -26,6 +27,7 @@ def main() -> None:
     run_parser.add_argument("--output-dir", default="output", help="Output directory")
 
     sub.add_parser("schema", help="Print config schema description")
+    sub.add_parser("battery-schema", help="Print MarketState JSON schema for judgment battery")
 
     args = parser.parse_args()
 
@@ -34,6 +36,8 @@ def main() -> None:
         print(json.dumps(result, indent=2))
     elif args.command == "schema":
         print(json.dumps(config_schema_description(), indent=2))
+    elif args.command == "battery-schema":
+        print(json.dumps(market_state_schema(), indent=2))
     else:
         parser.print_help()
 

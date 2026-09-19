@@ -85,6 +85,37 @@ class ThresholdsConfig:
 class OutputConfig:
     transition_log: str = "regime_transitions.csv"
     summary_json: str = "regime_summary_develop.json"
+    battery_log: str = "judgment_battery.csv"
+
+
+@dataclass
+class JudgmentBatteryThresholds:
+    """DRAFT thresholds for stub judgment battery (calibrate on develop only)."""
+
+    confidence_base: float = 0.75
+    confidence_short_circuit: float = 0.35
+    toxic_flow_event_window_boost: float = 0.25
+    toxic_flow_sig_pull_boost: float = 0.20
+    toxic_flow_quote_walk_boost: float = 0.30
+    liquidity_stressed_depth_drop_min: float = 0.25
+    liquidity_stressed_sig_pull_boost: float = 0.35
+    quote_walk_veto_risk_mid_move_bps: float = 3.0
+    quote_environment_base: float = 70.0
+    quote_environment_toxic_penalty: float = 40.0
+    quote_environment_liquidity_penalty: float = 30.0
+    regime_break_min_print_volume: float = 0.01
+    toxic_flow_high_threshold: float = 0.65
+    liquidity_stressed_high_threshold: float = 0.55
+    quote_walk_veto_risk_high_threshold: float = 0.50
+
+
+@dataclass
+class JudgmentBatteryConfig:
+    """Judgment battery overlay config — stub client only (no live Jev)."""
+
+    enabled: bool = True
+    client: str = "stub"  # swap for future TypeSafe client behind JudgmentClient interface
+    thresholds: JudgmentBatteryThresholds = field(default_factory=JudgmentBatteryThresholds)
 
 
 @dataclass
@@ -95,6 +126,7 @@ class RegimeLoggerConfig:
     session: SessionConfig = field(default_factory=SessionConfig)
     splits: SplitsConfig = field(default_factory=SplitsConfig)
     thresholds: ThresholdsConfig = field(default_factory=ThresholdsConfig)
+    judgment_battery: JudgmentBatteryConfig = field(default_factory=JudgmentBatteryConfig)
     output: OutputConfig = field(default_factory=OutputConfig)
 
 
@@ -121,6 +153,9 @@ def load_config(path: str | Path) -> RegimeLoggerConfig:
         vwap=_merge_dataclass(VwapThresholds, thresholds_raw.get("vwap")),
     )
 
+    battery_raw = raw.get("judgment_battery", {})
+    battery_thresholds_raw = battery_raw.get("thresholds", {})
+
     return RegimeLoggerConfig(
         job_id=raw.get("job_id", "JOB-20260917-MM-001"),
         research_only=raw.get("research_only", True),
@@ -128,6 +163,13 @@ def load_config(path: str | Path) -> RegimeLoggerConfig:
         session=_merge_dataclass(SessionConfig, raw.get("session")),
         splits=_merge_dataclass(SplitsConfig, raw.get("splits")),
         thresholds=thresholds,
+        judgment_battery=JudgmentBatteryConfig(
+            enabled=battery_raw.get("enabled", True),
+            client=battery_raw.get("client", "stub"),
+            thresholds=_merge_dataclass(
+                JudgmentBatteryThresholds, battery_thresholds_raw
+            ),
+        ),
         output=_merge_dataclass(OutputConfig, raw.get("output")),
     )
 
@@ -156,8 +198,14 @@ def config_schema_description() -> dict[str, Any]:
             "quote_walk": "mid_move_bps_min (DRAFT)",
             "vwap": "band_mode, band_bps, band_k_sigma (all DRAFT)",
         },
+        "judgment_battery": {
+            "enabled": "bool — run stub battery overlay (no live Jev)",
+            "client": "string — 'stub' only (future: typesafe behind interface)",
+            "thresholds": "JudgmentBatteryThresholds fields (all DRAFT)",
+        },
         "output": {
             "transition_log": "path for CSV transition log",
             "summary_json": "path for develop-split summary JSON",
+            "battery_log": "path for judgment battery CSV log",
         },
     }

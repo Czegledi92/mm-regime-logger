@@ -289,7 +289,7 @@ class PerpParams:
     reduce_frac: float = 0.5
     time_stop_bars: int = 48
     time_stop_min_r: float = 0.5  # time stop fires if MFE has not reached this many R by time_stop_bars
-    max_hold_bars: int = 144
+    max_hold_bars: int = 0  # 0 = off; the session flat already caps holding time
     taker_bps: float = 5.0  # paper placeholder; replace with the venue tier
     slippage_bps: float = 1.0
     funding_minutes: tuple[int, ...] = (0, 480, 960)  # per symbol in reality; read the venue's funding schedule
@@ -316,8 +316,9 @@ class Episode:
     entry_t: int
     entry_px: float
     r_px: float  # 1R in price units
-    stop_px: float
+    stop_px: float  # live stop (moves to entry on an add)
     exit_t: int | None = None
+    add_t: int | None = None
     exit_reason: str = "OPEN"
     pnl_bps: float = 0.0  # net, per 1 unit of initial size, at entry price
     cost_bps: float = 0.0
@@ -327,6 +328,10 @@ class Episode:
     max_units: float = 1.0
     added: bool = False
     reduced: bool = False
+
+    @property
+    def initial_stop_px(self) -> float:
+        return self.entry_px - self.side * self.r_px
 
     @property
     def r_bps(self) -> float:
@@ -427,7 +432,7 @@ def run_perp(bars: Bars, rf: RegimeFrame, rb: RibbonFrame, p: PerpParams = PerpP
             elif ep is not None:
                 pnl -= trade(t, target, o[t], reason)
                 if reason == "ADD":
-                    ep.added, ep.stop_px = True, ep.entry_px
+                    ep.added, ep.stop_px, ep.add_t = True, ep.entry_px, t
                 else:
                     ep.reduced = True
 
@@ -472,7 +477,7 @@ def run_perp(bars: Bars, rf: RegimeFrame, rb: RibbonFrame, p: PerpParams = PerpP
                 reason = "KILL_VWAP_RECROSS"
             elif p.use_ribbon_gate and rbs * s <= 0:
                 reason = "KILL_RIBBON_BREAK"
-            elif held >= p.max_hold_bars:
+            elif p.max_hold_bars and held >= p.max_hold_bars:
                 reason = "MAX_HOLD"
             elif held >= p.time_stop_bars and ep.mfe_r < p.time_stop_min_r:
                 reason = "TIME_STOP"

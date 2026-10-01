@@ -13,6 +13,7 @@ work (B-01) or the inventory-accumulation work.
 | [`tools/vwap_sd_mr_research.py`](tools/vwap_sd_mr_research.py) | Reference engines: `run_vault` (vault Pine semantics) and `run_v1` (paper contract), plus synthetic generators |
 | [`tools/make_figures.py`](tools/make_figures.py) | Regenerates every figure (seeded) |
 | [`tools/test_vwap_sd_mr_research.py`](tools/test_vwap_sd_mr_research.py) | Causality and semantics checks |
+| [`vwap-regime-ema-flow/`](vwap-regime-ema-flow/) | Next step: VWAP as a regime divider plus an EMA 21/50/100 ribbon filter. Includes a research brief, rule contract v0 (inventory-skew and perp books), fig01–fig09 and an engine with tests |
 
 ```bash
 pip install numpy matplotlib

@@ -1,10 +1,15 @@
-# S1-LXF-BAR v1.0: level × bar-flow Bayes on public BTCUSDT klines (computable specification)
+# S1-LXF-BAR v1.1: level × bar-flow Bayes on public BTCUSDT klines (computable specification)
 
 **PAPER ONLY.** This is a pre-registration, and it has **not been run**. It contains no result. The only numbers in it are parameter choices (labelled pre-registered defaults) and data facts checked by this run against the public Binance archive (tagged `[ARCHIVE]`, checked 2026-10-02 22:06–22:40 UTC).
 
 Parent program: [`20261003-level-x-live-flow-program.md`](20261003-level-x-live-flow-program.md). Where the two differ, this file wins for Study 1.
 
-Change control: any change to a value in this file creates v1.1 with a written reason. Results from different versions are never pooled.
+Change control: any change to a value in this file creates a new minor version with a written reason. Results from different versions are never pooled.
+
+| Version | Change | Reason |
+|---|---|---|
+| v1.0 | First computable spec | Next run computes Study 1 from public klines |
+| v1.1 | Adds robustness rows R-OI, R-REGIME and R-STOP to §11 and the `regime_tag` column to §12. No pass/fail rule, threshold or definition changed, so v1.0 and v1.1 primary results are identical by construction. Write outputs to `results/s1_v1.1/` | [Iteration 01](20261003-iter01-gate-after-1002-stills.md), changes C2, C5 and C7, after the 2 Oct stills |
 
 ## 0. Three corrections to the program's S1 summary
 
@@ -264,15 +269,23 @@ All statistics are computed on `CLOCK_OK` events only, separately per split. Con
 
 `TI_into` threshold 0.10 and 0.30; arming 10 and 20 bars; r = 5 and 20 bp; H = 15 and 60 bars; `CAL=PROXY`; clusters excluded; `BOX=EXCLUSIVE`; UTC box only; NY box only; σ placebos; a 5 m-bar version (arming 3 bars, H = 6 bars) for comparison with `[BAYES-0102]`, which used 5 m bars.
 
+Added in v1.1 from [Iteration 01](20261003-iter01-gate-after-1002-stills.md):
+
+| Row | Definition |
+|---|---|
+| R-OI | Split `confirm_RESPECT` events by `oi_d5c` > 0 against ≤ 0 ("loaded" against plain absorption). Report Δ_real(RESPECT) and the mean Y_net(3) of AGREE events per split |
+| R-REGIME | Set `regime_tag` from the open time of bar t: `post_cash` for 16:00–16:59 America/New_York, `cme_break` for 17:00–17:59, `other` otherwise. Report every H2 and G statistic for UTC-box events per `regime_tag` |
+| R-STOP | In the AGREE replay, add a stop at a placeholder 10 bp from L on the losing side: P_stop = L·(1 − s·0.001) for RESPECT and L·(1 + s·0.001) for BREAK. Let j be the first bar in t+1..t+3 that touches the stop (Lo_j ≤ P_stop when dir = +1; Hi_j ≥ P_stop when dir = −1). The exit is min(O_j, P_stop) for dir = +1 and max(O_j, P_stop) for dir = −1, so a bar that opens beyond the stop fills at its open. If no bar touches, the exit is C_{t+3}. A stopped exit is a taker exit, so the fee becomes 1.09 bp for RESPECT and 2.18 bp for BREAK. Report Y_net(3) with and without the stop, and the stop-out rate |
+
 ## 12. Outputs
 
-Raw data is not committed. Outputs go under `desk-briefs/hft-strategies/aggression-bayes/results/s1_v1/`:
+Raw data is not committed. Outputs go under `desk-briefs/hft-strategies/aggression-bayes/results/s1_v<version>/` (for this version, `results/s1_v1.1/`):
 
 | File | Content |
 |---|---|
 | `inputs_manifest.csv` | Every input file: URL, sha256, rows, date |
 | `s0_reconciliation.csv` | The §2.2 known answers, recomputed |
-| `events.parquet` (not committed if large; summary committed) | One row per real or placebo event: `event_id, cluster_id, is_placebo, offset_bp, split, box, date, open_time, level_type, instance_id, L, s, tsib_bucket, speed15, dist_vwap_sigma, ib_width_rel, vwap_slope30, touch_seq, TI_t, TI_into, pen_t, pen_class, cl_t, vz_t, atsz_t, oi_d5c, oi_na, TI_spot_t, Y_level, Y_fwd_3, Y_fwd_5, Y_fwd_15, Y_fwd_30, clock_ok, impulse, cal_tag, algebra_tag` |
+| `events.parquet` (not committed if large; summary committed) | One row per real or placebo event: `event_id, cluster_id, is_placebo, offset_bp, split, box, date, open_time, level_type, instance_id, L, s, tsib_bucket, speed15, dist_vwap_sigma, ib_width_rel, vwap_slope30, touch_seq, TI_t, TI_into, pen_t, pen_class, cl_t, vz_t, atsz_t, oi_d5c, oi_na, TI_spot_t, Y_level, Y_fwd_3, Y_fwd_5, Y_fwd_15, Y_fwd_30, clock_ok, impulse, cal_tag, algebra_tag, regime_tag` (from v1.1; `Y_stop_3` and `stopped` in the AGREE replay) |
 | `h1_cells.csv` | Per primary cell and split: n_R, n_B, n_NONE, p̂, binomial p, BH q, pass flag |
 | `h2_interaction.csv` | Per H and split: Δ_real, Δ_plac, I, CI, n |
 | `gate_log.parquet` and `gate_summary.csv` | Per event: each flag, first failing flag, AGREE flag, Y_net at 0 / 1.09 / 2.18 |

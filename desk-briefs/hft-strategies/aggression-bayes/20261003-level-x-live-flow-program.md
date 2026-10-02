@@ -17,7 +17,8 @@ Anything without one of these tags is a definition, a proposal or a placeholder,
 |---|---|
 | Track | HFT-strategies, sub-track `aggression-bayes` |
 | Instrument | Binance USDⓈ-M BTCUSDT perpetual. Binance spot BTCUSDT is used only as a control |
-| Status | v0 framework. Study 1 has a computable spec, [`20261003-s1-level-x-bar-flow-spec.md`](20261003-s1-level-x-bar-flow-spec.md). **No study has been run.** |
+| Status | v0 framework. Study 1 has a computable spec, [`20261003-s1-level-x-bar-flow-spec.md`](20261003-s1-level-x-bar-flow-spec.md) (v1.1). **No study has been run.** |
+| Iteration log | 01: [`20261003-iter01-gate-after-1002-stills.md`](20261003-iter01-gate-after-1002-stills.md), proposed joint-gate changes after the 2 Oct stills. Proposals only; the locked gate below is unchanged until Desk Floor decides |
 | Gate names | Locked by Desk Floor: `CLOCK_OK`, `INDEPENDENT_AGREE`, `PRINT_CONFIRM`, `DEPTH_AGREE`, `EDGE_OK`. The default state is `FLAT_WATCH` |
 | Inputs this run has not seen | Richard's live 1 s tape, his DOM recordings, his historical files, the 168 MB mp4 (not attached, **not watched**), and the Bayes brief |
 | Related packets | VWAP SD mean reversion ([PR #5](https://github.com/Czegledi92/mm-regime-logger/pull/5)); VWAP regime-follow with an EMA ribbon, VRF-EMA v0 ([PR #6](https://github.com/Czegledi92/mm-regime-logger/pull/6)); paper regime logger ([PR #1](https://github.com/Czegledi92/mm-regime-logger/pull/1)), whose `FLAT_WATCH`, quote-walk veto and `SIG-PULL` vocabulary this file reuses |
@@ -359,7 +360,8 @@ All thresholds are placeholders. An end-of-day "impulse day" label would leak fu
 |---|---|---|
 | Framework, locked-gate spec with reading notes, data contract, input checklist | **Yes** | |
 | Verified inventory of the public Binance archive: paths, date ranges, schemas | **Yes** (checked 2026-10-02 22:06–22:10 UTC) | |
-| Study ladder with pass/fail rules; Study 1 computable spec (S1 v1.0, with S0 known answers) | **Yes** | |
+| Study ladder with pass/fail rules; Study 1 computable spec (S1 v1.1, with S0 known answers) | **Yes** | |
+| Iteration 01: proposed joint-gate changes after the 2 Oct stills | **Yes** ([note](20261003-iter01-gate-after-1002-stills.md)) | Desk Floor decisions |
 | The worked example (2 Oct stills) scored against the five flags | **Yes**, qualitatively. Most cells are unknown (Appendix A) | |
 | Study 1 results | **No.** Not run in this PR | The next agent run. Full fidelity needs the Bayes brief (MVB-1) |
 | Verification of the `[PR7]` numbers, the board's VWAP anchor and the board's depth panel | **No** | The 2 Oct archive files (expected around 07:45 UTC on 3 Oct, not guaranteed) |

@@ -17,7 +17,7 @@ Anything without one of these tags is a definition, a proposal or a placeholder,
 |---|---|
 | Track | HFT-strategies, sub-track `aggression-bayes` |
 | Instrument | Binance USDⓈ-M BTCUSDT perpetual. Binance spot BTCUSDT is used only as a control |
-| Status | v0 framework and Study 1 pre-registration. **No study has been run.** |
+| Status | v0 framework. Study 1 has a computable spec, [`20261003-s1-level-x-bar-flow-spec.md`](20261003-s1-level-x-bar-flow-spec.md). **No study has been run.** |
 | Gate names | Locked by Desk Floor: `CLOCK_OK`, `INDEPENDENT_AGREE`, `PRINT_CONFIRM`, `DEPTH_AGREE`, `EDGE_OK`. The default state is `FLAT_WATCH` |
 | Inputs this run has not seen | Richard's live 1 s tape, his DOM recordings, his historical files, the 168 MB mp4 (not attached, **not watched**), and the Bayes brief |
 | Related packets | VWAP SD mean reversion ([PR #5](https://github.com/Czegledi92/mm-regime-logger/pull/5)); VWAP regime-follow with an EMA ribbon, VRF-EMA v0 ([PR #6](https://github.com/Czegledi92/mm-regime-logger/pull/6)); paper regime logger ([PR #1](https://github.com/Czegledi92/mm-regime-logger/pull/1)), whose `FLAT_WATCH`, quote-walk veto and `SIG-PULL` vocabulary this file reuses |
@@ -91,7 +91,7 @@ All five flags are required, in this order. The first miss sets `FLAT_WATCH` and
 | *Churn (added)* | Exit and re-entry inside one episode with no new burst | State machine: no re-entry after an exit in the same episode. Excluded from `V_qual` | Fill log |
 | *Optimistic maker fills (added)* | A paper maker fill counted when price only touches the quote | Fill model: trade-through or queue model only | Tape, plus DOM for the queue |
 
-0–5 bp kisses: `[BAYES-0102]` reports them as break-heavy. A kiss is its own event class in the level algebra, not fake volume by itself. Repeated kisses are ping-pong, and `EPISODE_ONCE` caps them.
+0–5 bp kisses: `[BAYES-0102]` reports them as break-heavy. A kiss is its own event class, not fake volume by itself. Because it is measured on the touch bar, it is burst-side information and cannot sit in the frozen level prior (S1 spec, correction R1). Repeated kisses are ping-pong, and `EPISODE_ONCE` caps them.
 
 ### A. Ordered build steps
 
@@ -139,8 +139,8 @@ Checked on `data.binance.vision` (S3 bucket listing), 2026-10-02 22:06–22:10 U
 |---|---|---|---|---|---|
 | USDⓈ-M klines, 1 m | `data/futures/um/daily/klines/BTCUSDT/1m/` | 2019-12-31 | 2026-10-01 | 1 m | `open_time, open, high, low, close, volume, close_time, quote_volume, count, taker_buy_volume, taker_buy_quote_volume, ignore` |
 | USDⓈ-M klines, 5 m | `…/klines/BTCUSDT/5m/` | 2019-12-31 | 2026-10-01 | 5 m | same |
-| USDⓈ-M aggTrades | `data/futures/um/daily/aggTrades/BTCUSDT/` | 2019-12-31 | 2026-10-01 | tick, ms | `agg_trade_id, price, quantity, first_trade_id, last_trade_id, transact_time, is_buyer_maker`. The 2026-10-01 file is about 15 MB zipped |
-| USDⓈ-M trades | `data/futures/um/daily/trades/BTCUSDT/` | 2019-09-08 | 2026-10-01 | tick, ms | `id, price, qty, quote_qty, time, is_buyer_maker`. The 2026-10-01 file is about 24 MB zipped |
+| USDⓈ-M aggTrades | `data/futures/um/daily/aggTrades/BTCUSDT/` | 2019-12-31 | 2026-10-01 | tick, ms | `agg_trade_id, price, quantity, first_trade_id, last_trade_id, transact_time, is_buyer_maker`. The 2026-10-01 file is about 15 MB zipped. **Do not bucket by minute or second with it:** on 2026-10-01, 139 of 1,440 minutes disagree with the klines on volume. Use it for sweep groups only |
+| USDⓈ-M trades | `data/futures/um/daily/trades/BTCUSDT/` | 2019-09-08 | 2026-10-01 | tick, ms | `id, price, qty, quote_qty, time, is_buyer_maker`. The 2026-10-01 file is about 24 MB zipped. It reconciles **exactly** with the 1 m klines (volume, taker-buy volume, trade count, in every minute), so it is the source for 1 s bars |
 | USDⓈ-M bookDepth | `data/futures/um/daily/bookDepth/BTCUSDT/` | 2023-01-01 | 2026-10-01 | snapshots about every 30 s (on 2026-10-01: 2,880 snapshots, gaps 24–36 s) | `timestamp, percentage, depth, notional`. Bands are ±0.2, ±1, ±2, ±3, ±4 and ±5 % of mid; depth is cumulative BTC (negative percentages are the bid side) |
 | USDⓈ-M metrics | `data/futures/um/daily/metrics/BTCUSDT/` | 2020-09-01 | 2026-10-01 | 5 m | `create_time, symbol, sum_open_interest, sum_open_interest_value, count_toptrader_long_short_ratio, sum_toptrader_long_short_ratio, count_long_short_ratio, sum_taker_long_short_vol_ratio` |
 | Mark price and premium index klines, 1 m | `…/markPriceKlines/`, `…/premiumIndexKlines/` | Dec 2019 | 2026-10-01 | 1 m | OHLC |
@@ -359,7 +359,7 @@ All thresholds are placeholders. An end-of-day "impulse day" label would leak fu
 |---|---|---|
 | Framework, locked-gate spec with reading notes, data contract, input checklist | **Yes** | |
 | Verified inventory of the public Binance archive: paths, date ranges, schemas | **Yes** (checked 2026-10-02 22:06–22:10 UTC) | |
-| Study ladder with pass/fail rules; Study 1 pre-registration | **Yes** | |
+| Study ladder with pass/fail rules; Study 1 computable spec (S1 v1.0, with S0 known answers) | **Yes** | |
 | The worked example (2 Oct stills) scored against the five flags | **Yes**, qualitatively. Most cells are unknown (Appendix A) | |
 | Study 1 results | **No.** Not run in this PR | The next agent run. Full fidelity needs the Bayes brief (MVB-1) |
 | Verification of the `[PR7]` numbers, the board's VWAP anchor and the board's depth panel | **No** | The 2 Oct archive files (expected around 07:45 UTC on 3 Oct, not guaranteed) |
@@ -505,9 +505,9 @@ There are no Sharpe ratios, hit rates or capacity figures here, because none has
 
 | ID | Question | Data | Label | Horizon | Baseline | Pass | Fail leads to |
 |---|---|---|---|---|---|---|---|
-| **S0** Data and clock audits | Are bars, tape and boards consistent? Which VWAP anchor does the board use? | Archive 1 m klines, aggTrades, bookDepth (2026-10-01; 2026-10-02 once published); the stills | None (reconciliation) | n/a | n/a | Per-minute volume and taker-buy volume from aggTrades equal the kline fields to rounding; a candidate anchor reproduces the board VWAP (85,740.86 at 16:30 ET and 85,699.91 at 17:25 ET `[still]`) to within 1 USDT (placeholder) | Board levels are treated as not `CLOCK_OK`; we use our own levels only |
+| **S0** Data and clock audits | Are bars, tape and boards consistent? Which VWAP anchor does the board use? | Archive 1 m klines, trades, aggTrades, bookDepth (2026-10-01; 2026-10-02 once published); the stills | None (reconciliation) | n/a | n/a | The S1 spec §2.2 known answers are reproduced: per-minute volume, taker-buy volume and count from `trades` equal the kline fields exactly; a candidate anchor reproduces the board VWAP (85,740.86 at 16:30 ET and 85,699.91 at 17:25 ET `[still]`) to within 1 USDT (placeholder) | Board levels are treated as not `CLOCK_OK`; we use our own levels only |
 | **S1** Level × bar-flow (public) | Are there frozen level states that lean? Does touch-minute bar flow confirm or veto them better than at placebo levels? | Public 1 m and 5 m klines with `taker_buy_volume`, 5 m metrics OI, spot 1 m (control), the event algebra | Respect/break; signed forward returns | 3 m (proxy for 180 s), 5 m, 15 m, 30 m | Level-only (`[BAYES-0102]`); flow at placebo levels; unconditional | See the S1 pre-registration below | Escalate to Desk Floor (no lean states), or flow adds nothing at 1 m and S2 must justify itself |
-| **S2** Level × 1 s tape (public) | Does tape-resolution evidence (sweeps, prints at the level, the absorption proxy, `TI_w`) add lift over S1? | aggTrades built into 1 s bars; 5 m OI | 180 s markout on a trade-price mid proxy; respect/break | 30 s, 60 s, 180 s, 5 m, 15 m | S1 bar model on the same episodes; placebo levels | Held-out log-loss or Brier improvement over S1, with CI excluding 0; AGREE-cell net 180 s proxy lower bound above 0 (maker 0 for B, 1.09 bp for taker A) | Keep the bar model. DOM work must then beat S1, not S2 |
+| **S2** Level × 1 s tape (public) | Does tape-resolution evidence (sweeps, prints at the level, the absorption proxy, `TI_w`) add lift over S1? | `trades` built into 1 s bars; aggTrades for sweep groups only; 5 m OI | 180 s markout on a trade-price mid proxy; respect/break | 30 s, 60 s, 180 s, 5 m, 15 m | S1 bar model on the same episodes; placebo levels | Held-out log-loss or Brier improvement over S1, with CI excluding 0; AGREE-cell net 180 s proxy lower bound above 0 (maker 0 for B, 1.09 bp for taker A) | Keep the bar model. DOM work must then beat S1, not S2 |
 | **S2b** Coarse depth (public) | Do the 30 s depth cushion (±0.2% and ±1% bands) at arming, and its change across the burst, add over S2? | bookDepth since 2023-01-01 | as S2 | as S2 | S2 | Lift with CI excluding 0 | Drop coarse depth; wait for DOM |
 | **S3** Level × DOM (Richard) | Do `DEPTH_AGREE` (A reload or fail-to-refill; B two-sided rest; vacuum), `SPOOF_PULL_VETO` and quote-walk detection add over S2? Do the vetoes remove worse-than-kept episodes? | MVB-3 | True-mid 180 s markout; respect/break | 30 s, 60 s, 180 s, 5 m, 15 m | S2 tape-only on the same sessions | Lift with CI excluding 0 on held-out sessions; vetoed episodes have worse net markouts than kept ones | Flags 3–4 become log-only, pending Desk Floor |
 | **S4** Joint-gate paper sim | Does the full five-flag gate with the §7 state machine produce held-out net-positive markouts, and how much `V_qual`? | S2 and S3 data | Fills, markouts, bp per unit, R | Episode | Ungated touch-and-follow; level-only; flow-only; random entries with the same timing distribution | Every C2 constraint holds on the test split; `V_qual`, `V_fake_shadow` and the reason histogram are reported | Kill (step 9) |

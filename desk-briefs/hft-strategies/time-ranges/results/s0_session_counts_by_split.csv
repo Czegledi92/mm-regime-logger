@@ -1,0 +1,7 @@
+split,first_utc_day,last_utc_day,calendar_days,mon_fri_days,sat_sun_days
+launch_trades_only,2019-09-08,2019-12-31,115,82,33
+develop,2020-01-01,2023-12-31,1461,1043,418
+validate,2024-01-01,2025-06-30,547,391,156
+test_touch_once,2025-07-01,2026-09-30,457,327,130
+perp_primary_total,2020-01-01,2026-09-30,2465,1761,704
+spot_control_2018_2019,2018-01-01,2019-12-31,730,522,208

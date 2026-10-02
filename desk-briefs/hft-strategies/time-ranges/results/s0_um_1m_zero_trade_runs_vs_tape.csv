@@ -1,0 +1,14 @@
+run_start_utc,run_end_utc,minutes,daily_kline_trades_in_run,raw_trades_in_run,aggtrades_rows_in_run,verdict
+2020-09-27T11:13:00+00:00,2020-09-27T11:15:00+00:00,2,0,0,0,no prints in any public source
+2021-03-02T01:01:00+00:00,2021-03-02T02:00:00+00:00,59,0,0,0,no prints in any public source
+2022-05-01T22:26:00+00:00,2022-05-01T22:55:00+00:00,29,0,0,0,no prints in any public source
+2022-05-28T16:40:00+00:00,2022-05-28T17:15:00+00:00,35,0,0,0,no prints in any public source
+2023-09-12T08:34:00+00:00,2023-09-12T08:53:00+00:00,19,0,0,0,no prints in any public source
+2023-11-10T15:07:00+00:00,2023-11-10T16:46:00+00:00,99,369608,369608,127604,monthly kline defect: daily klines and tape have prints
+2024-10-28T16:21:00+00:00,2024-10-28T16:35:00+00:00,14,0,0,0,no prints in any public source
+2024-10-28T16:36:00+00:00,2024-10-28T16:37:00+00:00,1,0,0,0,no prints in any public source
+2024-10-28T20:00:00+00:00,2024-10-28T21:14:00+00:00,74,0,116368,49140,kline defect (monthly and daily): tape has prints
+2025-01-14T13:32:00+00:00,2025-01-14T13:34:00+00:00,2,0,35513,17168,kline defect (monthly and daily): tape has prints
+2025-01-29T01:23:00+00:00,2025-01-29T01:36:00+00:00,13,0,17896,7077,kline defect (monthly and daily): tape has prints
+2025-01-29T02:41:00+00:00,2025-01-29T02:45:00+00:00,4,0,3290,1351,kline defect (monthly and daily): tape has prints
+2025-08-29T06:19:00+00:00,2025-08-29T06:37:00+00:00,18,0,0,0,no prints in any public source

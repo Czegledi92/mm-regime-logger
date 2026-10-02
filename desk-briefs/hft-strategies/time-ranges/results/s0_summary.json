@@ -1,0 +1,128 @@
+{
+  "checked_at_utc": "2026-10-02T22:53:04+00:00",
+  "source": "data.binance.vision public archive; sha256 CHECKSUM verified for every downloaded zip",
+  "scope_note": "Descriptive audit only. No range labels, breaks, reversal/continuation rates or forward returns were computed.",
+  "um_1m": {
+    "first_bar_utc": "2020-01-01T00:00:00+00:00",
+    "last_bar_utc": "2026-09-30T23:59:00+00:00",
+    "rows": 3549600,
+    "duplicate_open_times": 0,
+    "off_grid_open_times": 0,
+    "missing_minutes_total": 0,
+    "gap_runs": 0,
+    "gap_runs_ge_5min": 0,
+    "longest_gap_minutes": 0,
+    "zero_trade_minutes_total": 369,
+    "months": 81,
+    "months_with_header_row": 57,
+    "first_month_with_header_row": "2022-01",
+    "last_month_with_two_decimal_prices_used": "2024-08"
+  },
+  "um_funding": {
+    "first_event_utc": "2020-01-01T00:00:00+00:00",
+    "last_event_utc": "2026-09-30T16:00:00.002000+00:00",
+    "events": 7395,
+    "interval_hours_values": [
+      8
+    ],
+    "hours_utc_values": [
+      0,
+      8,
+      16
+    ],
+    "events_not_on_minute_00": 0,
+    "max_calc_time_offset_ms_past_the_hour": 47
+  },
+  "volume_by_clock": {
+    "weekdays_us_standard_time": 593,
+    "weekdays_us_daylight_time": 1168,
+    "largest_5m_share_steps": {
+      "us_standard_time_pct": [
+        {
+          "utc_bucket": "13:30",
+          "share_step_pct_points": 0.4009,
+          "share_pct": 0.782
+        },
+        {
+          "utc_bucket": "14:30",
+          "share_step_pct_points": 0.3974,
+          "share_pct": 0.8387
+        },
+        {
+          "utc_bucket": "16:00",
+          "share_step_pct_points": 0.2338,
+          "share_pct": 0.7702
+        },
+        {
+          "utc_bucket": "15:00",
+          "share_step_pct_points": 0.1714,
+          "share_pct": 0.8779
+        }
+      ],
+      "us_daylight_time_pct": [
+        {
+          "utc_bucket": "12:30",
+          "share_step_pct_points": 0.4633,
+          "share_pct": 0.8543
+        },
+        {
+          "utc_bucket": "13:30",
+          "share_step_pct_points": 0.3676,
+          "share_pct": 0.7907
+        },
+        {
+          "utc_bucket": "16:00",
+          "share_step_pct_points": 0.2201,
+          "share_pct": 0.6828
+        },
+        {
+          "utc_bucket": "14:00",
+          "share_step_pct_points": 0.212,
+          "share_pct": 0.8662
+        }
+      ]
+    }
+  },
+  "samples": {
+    "spot_1s_2018-03-01": {
+      "rows": 86400,
+      "ts_digits": 13,
+      "seconds_with_count_0": 25469,
+      "pct_seconds_with_trades": 70.52,
+      "count_0_rows_have_flat_ohlc": true
+    },
+    "spot_1s_2026-09-01": {
+      "rows": 86400,
+      "ts_digits": 16,
+      "seconds_with_count_0": 7717,
+      "pct_seconds_with_trades": 91.07,
+      "count_0_rows_have_flat_ohlc": true
+    },
+    "um_aggTrades_2020-01-01": {
+      "header_row": false,
+      "rows": 71359,
+      "ts_digits": 13,
+      "agg_id_contiguous": true,
+      "trade_id_contiguous": true,
+      "time_nondecreasing_in_id_order": true,
+      "pct_utc_seconds_with_trades": 29.86,
+      "max_seconds_without_trade": 59,
+      "same_ms_groups_spanning_2plus_prices": 10288
+    },
+    "um_aggTrades_2026-09-01": {
+      "header_row": true,
+      "rows": 1324889,
+      "ts_digits": 13,
+      "agg_id_contiguous": true,
+      "trade_id_contiguous": false,
+      "time_nondecreasing_in_id_order": true,
+      "pct_utc_seconds_with_trades": 96.55,
+      "max_seconds_without_trade": 4,
+      "same_ms_groups_spanning_2plus_prices": 104827
+    },
+    "um_trades_2019-09-08": {
+      "rows": 3754,
+      "first_trade_utc": "2019-09-08T17:57:50.575000+00:00"
+    }
+  }
+}

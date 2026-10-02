@@ -1,0 +1,8 @@
+year,expected_minutes,missing_minutes,missing_pct,zero_trade_minutes,utc_days_with_any_missing_minute
+2020,527040,0,0.0,2,0
+2021,525600,0,0.0,59,0
+2022,525600,0,0.0,64,0
+2023,525600,0,0.0,118,0
+2024,527040,0,0.0,89,0
+2025,525600,0,0.0,37,0
+2026,393120,0,0.0,0,0

@@ -1,0 +1,52 @@
+{
+  "stage": "validate",
+  "scored_splits": [
+    "develop",
+    "validate"
+  ],
+  "formats": {
+    "perp_1m_header_files": 366,
+    "perp_5m_header_files": 366,
+    "spot_1m_us_files": 366
+  },
+  "H1": {
+    "n_populated": 40,
+    "n_lean_develop": 6,
+    "lean_cells": "IBH|UTC|1|360+:RESPECT;IBH|UTC|-1|360+:RESPECT;IBL|UTC|1|360+:RESPECT;IBL|UTC|-1|360+:RESPECT;IBM|UTC|1|360+:RESPECT;IBM|UTC|-1|360+:RESPECT",
+    "n_lean_validate_pass": 4
+  },
+  "H2": {},
+  "G": {},
+  "logistic_check": {
+    "n_develop": 2352,
+    "n_validate": 655,
+    "logloss_logistic": 0.6018703477494849,
+    "logloss_betabinomial": 0.6121650052826246,
+    "logloss_constant_0.5": 0.6931471805599454
+  },
+  "speed15_tercile_cuts": [
+    7.256985121666478,
+    19.38542147577723
+  ],
+  "prior_by_type": {
+    "IBH": [
+      36.61239621724382,
+      15.204734792698366
+    ],
+    "IBL": [
+      13.870247725982027,
+      6.350554035459203
+    ],
+    "IBM": [
+      1512.9222922003157,
+      642.0052857336993
+    ],
+    "VWAP": [
+      712642.9655172414,
+      287356.0344827586
+    ]
+  },
+  "edge_ok_cells": [
+    "IBH|UTC|-1|360+"
+  ]
+}

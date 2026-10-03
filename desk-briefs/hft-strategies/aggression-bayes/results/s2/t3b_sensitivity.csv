@@ -1,0 +1,15 @@
+item,clock,split,group,n,value,share,lo,hi,delta_real,edge_ok_cells
+clock_ok events with a one-sided entry second,B15,develop,real,2557.0,375.0,0.14665623777864686,,,,
+clock_ok events with a one-sided entry second,M60,develop,real,2557.0,305.0,0.11928040672663277,,,,
+clock_ok events with a one-sided entry second,B15,develop,pct,4337.0,358.0,0.08254553839059257,,,,
+clock_ok events with a one-sided entry second,M60,develop,pct,4337.0,265.0,0.06110214433940512,,,,
+clock_ok events with a one-sided entry second,B15,validate,real,767.0,138.0,0.17992177314211213,,,,
+clock_ok events with a one-sided entry second,M60,validate,real,767.0,133.0,0.17340286831812254,,,,
+clock_ok events with a one-sided entry second,B15,validate,pct,1358.0,204.0,0.15022091310751104,,,,
+clock_ok events with a one-sided entry second,M60,validate,pct,1358.0,173.0,0.12739322533136965,,,,
+S2-H2 RESPECT,B15,validate,I(H),629.0,-0.8753859010863136,,-3.2885707635155916,1.6810528479936917,-0.7129544803165966,
+S2-H2 BREAK,B15,validate,I(H),629.0,-0.22019326912347614,,-5.794914626467545,4.7044779536752515,0.06912183206304391,
+S2-G AGREE,B15,validate,mean Y1s_net(180) primary,1.0,0.01541164504003148,,0.01541164504003148,0.01541164504003148,,IBM|UTC|-1|360+
+S2-L dLL,M60,validate,real,591.0,0.0007967657100862457,,-0.005191162114371723,0.007232852062508707,,
+S2-L dLL,M60,validate,placebo,1114.0,0.0016577537918691378,,-0.002327811490530802,0.005832690171461332,,
+S2-L dLL,M60,validate,real_minus_placebo,,-0.0008609880817828921,,-0.008185363519432708,0.0065984732893650385,,

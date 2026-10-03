@@ -1,0 +1,54 @@
+{
+  "spec": "S2-LXT-1S v1.0",
+  "stage": "develop+validate (test split not used)",
+  "scored_splits": [
+    "develop",
+    "validate"
+  ],
+  "trades_days": {
+    "requested": 263,
+    "kept": 263,
+    "dropped": []
+  },
+  "mid_vs_last_median_gap_bp": 0.007186985232601083,
+  "S2_H2": {
+    "VALIDATE_PASS": false,
+    "validate_pass_RESPECT": false,
+    "validate_pass_BREAK": false
+  },
+  "S2_G": {
+    "VALIDATE_PASS": false,
+    "n_validate_ge_30": false,
+    "validate_mean_gt_0": true,
+    "validate_lo95_gt_0": true,
+    "hour_concentration_ok": false,
+    "max_hour_share": 1.0,
+    "month_rule": "deferred to an S2 test split"
+  },
+  "S2_L": {
+    "VALIDATE_PASS": false,
+    "dLL": -0.0018288079003818299,
+    "dLL_lo95": -0.007149841895835364,
+    "dLL_hi95": 0.00345123892560818,
+    "real_minus_placebo_dLL": -0.0024913870383725875,
+    "real_minus_placebo_lo95": -0.00866379151913279,
+    "real_minus_placebo_hi95": 0.0037878531458302306
+  },
+  "T3b_sensitivity": {
+    "not_preregistered": true,
+    "S2_H2_pass": false,
+    "S2_G_pass": false,
+    "S2_L_pass": false
+  },
+  "edge_ok_cells": [
+    "IBM|UTC|-1|360+"
+  ],
+  "lean_cells": [
+    "IBH|UTC|-1|360+",
+    "IBH|UTC|1|360+",
+    "IBL|UTC|-1|360+",
+    "IBL|UTC|1|360+",
+    "IBM|UTC|-1|360+",
+    "IBM|UTC|1|360+"
+  ]
+}

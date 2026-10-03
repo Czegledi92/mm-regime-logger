@@ -1,0 +1,7 @@
+split,kind,events,tape_ok,tape_na,clock_ok_tape_ok
+develop,real,3376,3376,0,2557
+develop,pct,6323,6323,0,4337
+develop,sigma,5945,5945,0,3962
+validate,real,964,964,0,767
+validate,pct,1855,1855,0,1358
+validate,sigma,1559,1559,0,1034

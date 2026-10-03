@@ -523,6 +523,14 @@ def main():
     with np.errstate(invalid="ignore"):
         gap = np.abs(sec["mid"] - sec["last"]) / sec["last"] * 1e4
     mid_gap_median_bp = float(np.nanmedian(gap))
+    # entry second with a buyer- and a seller-initiated trade: the entry mid and every later mid use only prints >= T_d
+    both_sides = (sec["buy"] > 0) & (sec["v"] > sec["buy"])
+    entry_both = {}
+    for c in ("B15", "M60"):
+        kd = F[c]["kd"].to_numpy()
+        entry_both[c] = (kd >= 0) & (kd < len(both_sides)) & both_sides[np.clip(kd, 0, len(both_sides) - 1)]
+        LAB[(c, "mid", 1, "both")] = {k: np.where(entry_both[c], y, "NA" if k == "level" else np.nan)
+                                      for k, y in LAB[(c, "mid", 1)].items()}
 
     h = H_PRIMARY
     results = {}
@@ -645,6 +653,41 @@ def main():
         print("robustness done:", nm, flush=True)
     rob_df = pd.DataFrame(rob)
 
+    # not pre-registered: T3b sensitivity, labels only where the entry second has both a buy and a sell print
+    sens = []
+    for sp in SCORED:
+        for kind in ("real", "pct"):
+            m = (ep["tape_ok"] & ep["eligible"] & ~ep["placebo_dropped"] & ep["clock_ok"] & (ep["kind"] == kind)
+                 & (ep["split"] == sp)).to_numpy()
+            for c in ("B15", "M60"):
+                n1 = int((m & ~entry_both[c]).sum())
+                sens.append({"item": "clock_ok events with a one-sided entry second", "clock": c, "split": sp, "group": kind,
+                             "n": int(m.sum()), "value": n1, "share": n1 / m.sum()})
+    sres = config("B15", "1s", lab_key=("B15", "mid", 1, "both"))
+    for row in sres["h2"][sres["h2"]["split"] == "validate"].to_dict("records"):
+        sens.append({"item": f"S2-H2 {row['H']}", "clock": "B15", "split": "validate", "group": "I(H)",
+                     "n": row["n_real_confirm"] + row["n_real_other"], "value": row["I"], "lo": row["I_lo975"], "hi": row["I_hi975"],
+                     "delta_real": row["delta_real"]})
+    sa = sres["gs"][(sres["gs"]["split"] == "validate") & (sres["gs"]["group"] == "AGREE")].iloc[0]
+    sens.append({"item": "S2-G AGREE", "clock": "B15", "split": "validate", "group": "mean Y1s_net(180) primary", "n": sa["n"],
+                 "value": sa["mean_ynet_primary"], "lo": sa["lo95"], "hi": sa["hi95"],
+                 "edge_ok_cells": ";".join(sres["edge"].loc[sres["edge"]["edge_ok"], "cell"])})
+    m60s = m60.copy()
+    m60s["Y_level_1s"] = LAB[("M60", "mid", 1, "both")]["level"]
+    use = m60s["tape_ok"] & m60s["eligible"]
+    sl = {}
+    for grp, sub in (("real", m60s[use & (m60s["kind"] == "real")]), ("placebo", m60s[use & (m60s["kind"] == "pct") & ~m60s["placebo_dropped"]])):
+        res_, sl[grp] = lift(sub, base_m60, TAPE_NUMS, "Y_level_1s")
+        sens.append({"item": "S2-L dLL", "clock": "M60", "split": "validate", "group": grp, "n": res_["n_validate"],
+                     "value": res_["dLL"], "lo": res_["dLL_lo95"], "hi": res_["dLL_hi95"]})
+    lo, hi = s1.pct(sl["real"]["dLL"] - sl["placebo"]["dLL"], 2.5, 97.5)
+    sens.append({"item": "S2-L dLL", "clock": "M60", "split": "validate", "group": "real_minus_placebo",
+                 "value": sens[-2]["value"] - sens[-1]["value"], "lo": lo, "hi": hi})
+    sens_df = pd.DataFrame(sens)
+    sl_real = sens_df[(sens_df["item"] == "S2-L dLL") & (sens_df["group"] == "real")].iloc[0]
+    sens_v = {"not_preregistered": True, "S2_H2_pass": h2_verdict(sres["h2"])["VALIDATE_PASS"],
+              "S2_G_pass": g_verdict(sres["gate"], sres["gs"])["VALIDATE_PASS"], "S2_L_pass": bool(sl_real["lo"] > 0)}
+
     # outputs
     prim["h2"].to_csv(os.path.join(args.out, "h2_interaction.csv"), index=False)
     prim["edge"].to_csv(os.path.join(args.out, "edge_table.csv"), index=False)
@@ -667,6 +710,7 @@ def main():
     fake_df.to_csv(os.path.join(args.out, "fake_level_g.csv"), index=False)
     hz_df.to_csv(os.path.join(args.out, "horizons.csv"), index=False)
     rob_df.to_csv(os.path.join(args.out, "robustness.csv"), index=False)
+    sens_df.to_csv(os.path.join(args.out, "t3b_sensitivity.csv"), index=False)
     cand = prim["gs"][prim["gs"]["group"] == "pre_EDGE_candidates"]
     cand.to_csv(os.path.join(args.out, "candidates.csv"), index=False)
 
@@ -696,7 +740,7 @@ def main():
                "trades_days": {"requested": len(DAYS), "kept": int((qc["slice"] == "KEPT").sum()),
                                "dropped": qc.loc[qc["slice"] != "KEPT", ["date", "status"]].to_dict("records")},
                "mid_vs_last_median_gap_bp": mid_gap_median_bp,
-               "S2_H2": h2v, "S2_G": gv, "S2_L": lv,
+               "S2_H2": h2v, "S2_G": gv, "S2_L": lv, "T3b_sensitivity": sens_v,
                "edge_ok_cells": sorted(edge_cells), "lean_cells": sorted(lean_cells)}
     with open(os.path.join(args.out, "summary.json"), "w") as f:
         json.dump(summary, f, indent=2, default=lambda o: o.item() if hasattr(o, "item") else str(o))

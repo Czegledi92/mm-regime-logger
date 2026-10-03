@@ -1,0 +1,34 @@
+split,category,program_label,units
+develop,episodes (AGREE),V_qual,36
+develop,INDEPENDENT_AGREE:NO_LEAN,no level lean,1252
+develop,INDEPENDENT_AGREE:NO_CONFIRM,no flow confirmation,690
+develop,CLOCK_OK:IMPULSE_I3,event bursts (impulse),476
+develop,INDEPENDENT_AGREE:LIQ_VETO,liq cascades (5 m OI proxy),352
+develop,CLOCK_OK:IMPULSE_I1,event bursts (impulse),239
+develop,EDGE_OK,fails fee/markout proxy,171
+develop,CLOCK_OK:IMPULSE_I2,event bursts (impulse),89
+develop,CLUSTER_DUP,one sweep scored twice,49
+develop,INDEPENDENT_AGREE:EPISODE_ONCE,touch ping-pong,22
+develop,ungated touch-and-follow total,V_units if ungated,3376
+validate,episodes (AGREE),V_qual,16
+validate,INDEPENDENT_AGREE:NO_LEAN,no level lean,391
+validate,INDEPENDENT_AGREE:NO_CONFIRM,no flow confirmation,178
+validate,CLOCK_OK:IMPULSE_I3,event bursts (impulse),120
+validate,INDEPENDENT_AGREE:LIQ_VETO,liq cascades (5 m OI proxy),105
+validate,EDGE_OK,fails fee/markout proxy,55
+validate,CLOCK_OK:IMPULSE_I2,event bursts (impulse),39
+validate,CLOCK_OK:IMPULSE_I1,event bursts (impulse),34
+validate,CLUSTER_DUP,one sweep scored twice,21
+validate,INDEPENDENT_AGREE:EPISODE_ONCE,touch ping-pong,5
+validate,ungated touch-and-follow total,V_units if ungated,964
+test,episodes (AGREE),V_qual,5
+test,INDEPENDENT_AGREE:NO_LEAN,no level lean,224
+test,INDEPENDENT_AGREE:NO_CONFIRM,no flow confirmation,117
+test,CLOCK_OK:IMPULSE_I1,event bursts (impulse),77
+test,INDEPENDENT_AGREE:LIQ_VETO,liq cascades (5 m OI proxy),71
+test,CLOCK_OK:IMPULSE_I3,event bursts (impulse),63
+test,EDGE_OK,fails fee/markout proxy,45
+test,CLUSTER_DUP,one sweep scored twice,9
+test,INDEPENDENT_AGREE:EPISODE_ONCE,touch ping-pong,3
+test,CLOCK_OK:IMPULSE_I2,event bursts (impulse),3
+test,ungated touch-and-follow total,V_units if ungated,617

@@ -1,0 +1,8 @@
+check,n,value
+confirm_RESPECT: events classified differently from S1,20022,0
+confirm_BREAK: events classified differently from S1,20022,0
+print_ok: events classified differently from S1,20022,0
+liq_veto_5m: events classified differently from S1,20022,0
+max |vz_w - vz_t|,20022,1.9539925233402755e-14
+AGREE event ids develop: M60 x bar / S1 / in both,36,36 / 36
+AGREE event ids validate: M60 x bar / S1 / in both,16,16 / 16

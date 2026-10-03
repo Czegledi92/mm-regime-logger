@@ -1,0 +1,14 @@
+test,pass,detail
+T1 Touch trade,True,20022 develop and validate events; with a touching trade in the touch bar: 20022
+T2 Minute equals S1,True,"20022 events; minute volume and taker-buy volume equal the klines in integer thousandths: True; max |TI_w - TI_t| 3.33e-16, |pen_w - pen_t| 0, |cl_w - cl_t| 0; NaN mismatches 0"
+T3a No look-ahead: features,True,"2026-06-30, 67 events x 5 clocks: 5360 trade-window values compared after perturbing every trade at or after T_d, changed 0; recomputed vs stored 0 differ. Burst threshold after perturbing seconds >= window start: 0/134 changed. Same-hour vz after perturbing the event day's blocks: 0/134 changed; vs stored 0 differ. OI stamp <= T_d for every event and clock: True"
+T3b Labels vs trades before the entry second (spec wording),False,"134 event-clock labels (B15, M60); changed after perturbing every trade before T_d: 8. Section 4 lets the entry mid proxy reuse the last buy and sell prints up to 10 s old (last price up to 60 s)"
+T3c Labels vs trades more than 60 s before T_d (beyond the section 4 lookback),True,changed 0/134; recomputed labels vs stored differ: 0; second bars equal stored: True
+T3d Control: perturbing trades after the entry second,True,labels changed in 134/134 (must be > 0)
+T4 S0-T,True,20/20 known answers reproduced
+T5 Checksums,True,263 kept trades files re-hashed against .CHECKSUM; mismatches: none; fetch failures: 0 (all dropped: True)
+T6 Reconciliation,True,263 kept days; mismatching minutes on kept days: 0; event days not kept: none
+T7 Determinism,True,15 s2.py output files compared byte for byte with a second run; differing: none
+T8 Placebo hygiene,True,"15682 kept placebo events; closest real level 10.0013 bp (must be > 10) (S1 independent check, develop and validate)"
+T9 S1 episodes,True,"36545 rebuilt rows equal results/s1_v1.1/events.parquet on event_id, open_time, L, s, kind, clock_ok, Y_level, Y_fwd_3; lean cells equal: True"
+T10 No test split,True,"trades dates requested 2025-12-12 to 2026-08-31 (263 files); dated 2026-09-01 or later: none; splits in frames: ['develop', 'validate']; latest event date 2026-08-31"

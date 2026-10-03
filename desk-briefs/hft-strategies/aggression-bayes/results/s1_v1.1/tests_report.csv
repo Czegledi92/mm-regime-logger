@@ -1,0 +1,12 @@
+test,pass,detail
+T1 Prefix invariance,True,events <= 2026-08-14: 47528 (47528 with complete labels); mismatches: none
+T2 VWAP (toy box),True,"toy VWAP at bar 3 = 100.777778, hand = 100.777778; bar 3 change leaves VWAP(3) unchanged"
+T2 VWAP (reset at anchor),True,VWAP(anchor) undefined and VWAP(anchor+1) = TP(anchor) on 3 UTC and 3 NY boxes
+T3 DST,True,2026-03-06: 14:30 UTC; 2026-03-09: 13:30 UTC; 2025-10-31: 13:30 UTC; 2025-11-03: 14:30 UTC
+T4 Windows,True,54677 events; outside window: 0; NY boxes on holidays: none; on weekends: none; NY ET clock 10:45-15:30: True; UTC 01:15-23:30: True
+T5 Labels,True,200 events: Y_fwd changed by bars <= t: 0; Y_level changed by bars < t: 0; control (C_t+3 moved) changed Y_fwd_3 in 200/200
+T6 Formats,True,"{'perp_1m_header_files': 366, 'perp_5m_header_files': 366, 'spot_1m_us_files': 366}; metrics days with 288 sorted on-grid stamps: 366/366; flagged gap days: 0"
+T7 Checksums,True,1466 files re-hashed against .CHECKSUM; mismatches: none
+T8 S0,True,14/14 known answers reproduced
+T9 Placebo hygiene,True,23573 kept placebo events; closest real level 10.0013 bp (must be > 10)
+T10 Determinism,True,18 output files compared byte for byte; differing: none

@@ -17,7 +17,7 @@ Anything without one of these tags is a definition, a proposal or a placeholder,
 |---|---|
 | Track | HFT-strategies, sub-track `aggression-bayes` |
 | Instrument | Binance USDⓈ-M BTCUSDT perpetual. Binance spot BTCUSDT is used only as a control |
-| Status | v0 framework. Study 1 has a computable spec, [`20261003-s1-level-x-bar-flow-spec.md`](20261003-s1-level-x-bar-flow-spec.md) (v1.1). **No study has been run.** |
+| Status | v0 framework. Study 1 has a computable spec, [`20261003-s1-level-x-bar-flow-spec.md`](20261003-s1-level-x-bar-flow-spec.md) (v1.1). **S0 and S1 v1.1 have been run:** H1 Pass, H2 Fail, G Fail, and placebo levels respect as often as real ones ([`results/s1_v1.1/20261003-s1-results.md`](results/s1_v1.1/20261003-s1-results.md)). S2 is next; DOM work stays on hold |
 | Iteration log | 01: [`20261003-iter01-gate-after-1002-stills.md`](20261003-iter01-gate-after-1002-stills.md), proposed joint-gate changes after the 2 Oct stills. Proposals only; the locked gate below is unchanged until Desk Floor decides |
 | Gate names | Locked by Desk Floor: `CLOCK_OK`, `INDEPENDENT_AGREE`, `PRINT_CONFIRM`, `DEPTH_AGREE`, `EDGE_OK`. The default state is `FLAT_WATCH` |
 | Inputs this run has not seen | Richard's live 1 s tape, his DOM recordings, his historical files, the 168 MB mp4 (not attached, **not watched**), and the Bayes brief |
@@ -363,12 +363,12 @@ All thresholds are placeholders. An end-of-day "impulse day" label would leak fu
 | Study ladder with pass/fail rules; Study 1 computable spec (S1 v1.1, with S0 known answers) | **Yes** | |
 | Iteration 01: proposed joint-gate changes after the 2 Oct stills | **Yes** ([note](20261003-iter01-gate-after-1002-stills.md)) | Desk Floor decisions |
 | The worked example (2 Oct stills) scored against the five flags | **Yes**, qualitatively. Most cells are unknown (Appendix A) | |
-| Study 1 results | **No.** Not run in this PR | The next agent run. Full fidelity needs the Bayes brief (MVB-1) |
+| Study 1 results | **Yes, in a later run of this PR** (`ALGEBRA=RECON`): [results](results/s1_v1.1/20261003-s1-results.md) | Full fidelity still needs the Bayes brief (MVB-1) |
 | Verification of the `[PR7]` numbers, the board's VWAP anchor and the board's depth panel | **No** | The 2 Oct archive files (expected around 07:45 UTC on 3 Oct, not guaranteed) |
-| Tape-level study (S2) | **No** | The next run. Public aggTrades are enough |
+| Tape-level study (S2) | **No** | The next run. Public `trades` are enough; S0 found that `aggTrades` volume does not reconcile with the 1 m klines |
 | DOM studies (S3): `DEPTH_AGREE`, `SPOOF_PULL_VETO`, quote-walk, true-mid markouts | **No** | Richard's DOM, same-host tape and OI polls (MVB-3) |
 | Paper sim with queue-aware maker fills (S4) | **No** | MVB-3, and S1–S3 passing |
-| Any posterior, backtest, Sharpe ratio, PnL, hit rate or volume number | **No.** None exists | The studies |
+| Any posterior, backtest, Sharpe ratio, PnL, hit rate or volume number | **No**, apart from the S1 v1.1 label shares and 3 m paper markouts in `results/s1_v1.1/`. No Sharpe ratio, PnL or fill model exists | The studies |
 | Anything from the 168 MB mp4 | **No.** It was not attached and not watched | The file. Even then it is an annotation index only (§3.4) |
 
 **Not claimed:** that a profitable model exists, that the gate has edge, or that the flow posterior adds anything to the level posterior. Those are exactly what the studies test.

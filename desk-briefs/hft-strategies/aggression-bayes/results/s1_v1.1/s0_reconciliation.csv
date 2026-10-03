@@ -1,0 +1,15 @@
+check,known,recomputed,match
+perp_1m_sha256,062f32fefdfb1d1cfbb6d58ee04c28dd6c45dbf2b52ed60fa4ad6a27b0b19bc5,062f32fefdfb1d1cfbb6d58ee04c28dd6c45dbf2b52ed60fa4ad6a27b0b19bc5,True
+trades_minutes_mismatch_volume,0,0,True
+trades_minutes_mismatch_taker_buy,0,0,True
+trades_minutes_mismatch_count,0,0,True
+day_volume_btc,143164.950,143164.950,True
+trade_rows,3249979,3249979,True
+sum_kline_count,3249979,3249979,True
+agg_day_volume_equal,True,True,True
+agg_day_taker_buy_equal,True,True,True
+agg_minutes_mismatch_volume,139,139,True
+agg_max_volume_gap_btc,3.863,3.863,True
+agg_minutes_mismatch_taker_buy,90,90,True
+agg_minutes_mismatch_open,49,49,True
+agg_ids_absent_from_trades,730,730,True
